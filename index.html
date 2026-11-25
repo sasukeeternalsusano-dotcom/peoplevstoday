@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>The People vs. Today</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Nunito:wght@700;800;900&family=Caveat:wght@600;700&display=swap">
+<style>
+:root{--type:"Special Elite","Courier New",monospace;--body:"Nunito",system-ui,sans-serif;--hand:"Caveat","Segoe Print",cursive;--ink:#2b1d14;--red:#c8202f;--paper:#fbf4e4;--wood:#4a2c1a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none}
+body{position:fixed;inset:0;font-family:var(--body);color:var(--ink);-webkit-user-select:none;user-select:none;
+  background:repeating-linear-gradient(90deg,#4a2c1a 0 46px,#52321e 46px 48px,#432817 48px 96px),#4a2c1a}
+body:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,#ffcf8a33,transparent 60%),radial-gradient(ellipse at 50% 120%,#0008,transparent 60%);pointer-events:none}
+#app{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px}
+.scene{display:none;width:min(440px,100%);max-height:100%;flex-direction:column}
+.scene.on{display:flex;animation:in .45s cubic-bezier(.2,1.3,.4,1)}
+@keyframes in{from{opacity:0;transform:translateY(18px) scale(.97)}}
+.card{position:relative;background:var(--paper);border-radius:6px;padding:20px 18px 16px;box-shadow:0 10px 0 #2b170c,0 18px 40px #0008;overflow:auto;max-height:calc(100dvh - 110px);
+  background-image:repeating-linear-gradient(#0000 0 27px,#e9dcc0 27px 28px)}
+.card:after{content:"";position:absolute;left:30px;top:0;bottom:0;width:1px;background:#e6a8a8}
+.tab{display:inline-block;font:400 12px var(--type);background:#e8c98a;padding:5px 12px;border-radius:6px 6px 0 0;margin-left:14px;color:#5a3a1a}
+h1{font:400 30px/1.05 var(--type);margin:4px 0 6px;letter-spacing:1px}
+h2{font:400 20px/1.15 var(--type);margin:0 0 10px}
+.small{font:400 12px var(--type);color:#7a5a3a;letter-spacing:.5px}
+p{font-weight:800;font-size:16px;line-height:1.4;margin:0 0 10px}
+.who{font:400 11px var(--type);letter-spacing:1px;color:var(--red);margin-bottom:2px}
+.line{background:#fff;border-radius:12px;padding:10px 12px;margin:0 0 10px;box-shadow:0 2px 0 #e2d2b4;font-weight:800;font-size:15.5px;line-height:1.35}
+.line.def{background:#e8eef6;margin-left:22px}
+.line.pro{margin-right:22px}
+.stamp{position:absolute;font:400 30px var(--type);color:var(--red);border:4px solid var(--red);border-radius:8px;padding:4px 12px;transform:rotate(-12deg);opacity:0;pointer-events:none;mix-blend-mode:multiply;letter-spacing:2px}
+.stamp.on{animation:st .35s cubic-bezier(.2,1.8,.4,1) forwards}
+@keyframes st{from{opacity:0;transform:rotate(-12deg) scale(2.4)}to{opacity:.88;transform:rotate(-12deg) scale(1)}}
+.btn{display:block;width:100%;margin-top:12px;font:900 17px var(--body);color:#fff;background:var(--red);border:0;border-radius:14px;padding:14px;cursor:pointer;box-shadow:0 5px 0 #7a1019}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #7a1019}
+.btn.alt{background:#5a3a1a;box-shadow:0 5px 0 #2b170c}
+.btn:disabled{opacity:.45}
+.charges{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ch{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #e2d2b4;border-radius:12px;padding:10px 12px;font:800 15px var(--body);cursor:pointer;text-align:left}
+.ch i{font-style:normal;width:22px;height:22px;border-radius:6px;border:2px solid #b89a70;display:grid;place-items:center;flex:none;font-size:14px;color:#fff}
+.ch.sel{border-color:var(--red);background:#fff1f1}.ch.sel i{background:var(--red);border-color:var(--red)}
+.add{display:flex;gap:7px;margin-top:4px}
+.add input{flex:1;min-width:0;font:800 15px var(--body);border:2px dashed #b89a70;border-radius:12px;padding:10px;background:#fffdf7;-webkit-user-select:text;user-select:text}
+.add button{font:900 14px var(--body);border:0;border-radius:12px;background:#5a3a1a;color:#fff;padding:0 14px;cursor:pointer}
+.count{border:2px solid #2b1d14;border-radius:10px;padding:10px 12px;background:#fff;margin-bottom:12px;position:relative}
+.count b{display:block;font:400 12px var(--type);color:#7a5a3a}
+.count span{font:800 17px var(--body)}
+.count .stamp{right:8px;top:6px;font-size:18px;padding:2px 8px;border-width:3px}
+.gavel{font-size:64px;text-align:center;margin:6px 0;display:block;transform-origin:80% 80%}
+.gavel.bang{animation:bang .4s ease-in}
+@keyframes bang{0%{transform:rotate(0)}40%{transform:rotate(-35deg)}70%{transform:rotate(12deg)}100%{transform:rotate(0)}}
+.big{position:relative;text-align:center;padding:24px 0 10px}
+.big .stamp{position:relative;display:inline-block;font-size:36px}
+.coupons{display:grid;grid-template-columns:1fr;gap:9px}
+.cp{position:relative;border:3px dashed var(--red);border-radius:14px;background:#fff6f3;min-height:74px;padding:12px 14px;cursor:pointer;overflow:hidden}
+.cp .cv{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;background:repeating-linear-gradient(45deg,#c8202f,#c8202f 10px,#d63a48 10px 20px);color:#fff;font:400 15px var(--type);transition:transform .45s cubic-bezier(.7,0,.3,1)}
+.cp.open .cv{transform:translateX(105%)}
+.cp b{display:block;font:400 11px var(--type);color:var(--red);margin-bottom:3px}
+.cp div.t{font:700 22px/1.12 var(--hand)}
+.shred{position:relative;height:250px;margin:6px 0;overflow:hidden;pointer-events:none}
+.sheet{position:absolute;left:50%;top:0;width:200px;margin-left:-100px;height:150px;background:#fff;border:2px solid #d9c9a8;border-radius:4px;padding:10px;font:400 12px/1.5 var(--type);transition:transform 2.2s linear;overflow:hidden}
+.sheet.go{transform:translateY(150px)}
+.machine{position:absolute;left:50%;top:146px;width:240px;margin-left:-120px;height:44px;background:#3a3f4a;border-radius:10px;box-shadow:inset 0 -6px 0 #2a2e36;z-index:2;color:#9aa3b2;font:400 11px var(--type);display:flex;align-items:center;justify-content:center;letter-spacing:2px}
+.machine:before{content:"";position:absolute;left:18px;right:18px;top:-4px;height:6px;background:#111;border-radius:4px}
+.strip{position:absolute;top:186px;width:8px;background:#fff;border:1px solid #d9c9a8;z-index:1;animation:fall 1.6s ease-in forwards}
+@keyframes fall{from{height:0}to{height:60px;opacity:.9}}
+.letter{font:700 25px/1.25 var(--hand);color:var(--ink)}
+.sig{text-align:right;font:700 28px var(--hand);color:var(--red);margin-top:8px}
+.dots{display:flex;justify-content:center;gap:6px;margin-top:14px}
+.dots i{width:7px;height:7px;border-radius:50%;background:#ffffff40}.dots i.on{background:#ffcf8a}
+#conf{position:fixed;inset:0;pointer-events:none;z-index:9}
+.conf{position:absolute;width:8px;height:12px;top:-14px;animation:cf 2.6s linear forwards}
+@keyframes cf{to{transform:translateY(110vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- 0. cover -->
+<section class="scene on" id="s0"><span class="tab">CASE FILE · 25.11.2026</span><div class="card">
+  <div class="small">TOP SECRET · COURT OF DOODI · CASE NO. 2511</div>
+  <h1>THE PEOPLE<br>vs.<br>TODAY</h1>
+  <p>Plaintiff: <b>Danoya</b>, my queen 👑<br>Defendant: <b>Today</b> (Wednesday, 25 November)<br>Filed by: <b>Investigator Batmed</b></p>
+  <p class="small">Charge, in the plaintiff's own words: "absolute worst day".</p>
+  <div class="stamp on" style="right:18px;bottom:96px;font-size:22px">URGENT</div>
+  <button class="btn" data-go="1">Open the case ⚖️</button>
+</div></section>
+
+<!-- 1. order in court -->
+<section class="scene" id="s1"><span class="tab">COURTROOM 1</span><div class="card">
+  <span class="gavel" id="g1">🔨</span>
+  <div class="who">JUDGE DOODI</div><div class="line">Order! Order in the court. Please rise. Actually, don't. You've been on your feet all day. Sit. Get comfy.</div>
+  <div class="who">INVESTIGATOR BATMED</div><div class="line pro">Your Honour, today stands accused of being the absolute worst day. Those are the plaintiff's exact words, and this court takes them extremely seriously.</div>
+  <div class="who" style="text-align:right">RAINY McCLOUD ☁️, LAWYER FOR TODAY</div><div class="line def">My client is just a Wednesday. My client is innocent.</div>
+  <div class="who">JUDGE DOODI</div><div class="line">Noted. Also ignored. Investigator, read the charges.</div>
+  <p class="small">(Also yes, I'm the judge, the investigator and the jury. Budget cuts.)</p>
+  <button class="btn" data-go="2">Read the charges 📜</button>
+</div></section>
+
+<!-- 2. pick charges -->
+<section class="scene" id="s2"><span class="tab">THE CHARGES</span><div class="card">
+  <h2>What did Today do?</h2>
+  <p class="small">Tap everything that's true. Add your own, as many as you want.</p>
+  <div class="charges" id="chs"></div>
+  <div class="add"><input id="own" maxlength="80" placeholder="Add your own charge…" enterkeyhint="done"><button id="addB">Add</button></div>
+  <button class="btn" id="startTrial" disabled>Begin the trial (0 charges)</button>
+</div></section>
+
+<!-- 3. the trial, one count at a time -->
+<section class="scene" id="s3"><span class="tab" id="cntTab">COUNT 1</span><div class="card">
+  <div class="count"><b id="cntN">COUNT 1</b><span id="cntT"></span><div class="stamp" id="cntS">GUILTY</div></div>
+  <div class="who" style="text-align:right">RAINY McCLOUD ☁️</div><div class="line def" id="obj"></div>
+  <div id="reb" style="display:none"><div class="who">INVESTIGATOR BATMED</div><div class="line pro" id="rebT"></div></div>
+  <button class="btn" id="overrule">OVERRULED! 🔨</button>
+</div></section>
+
+<!-- 4. closing -->
+<section class="scene" id="s4"><span class="tab">CLOSING STATEMENT</span><div class="card">
+  <div class="who">INVESTIGATOR BATMED</div>
+  <div class="line pro">Your Honour. The plaintiff is the kindest, hardest working, most beautiful person in all of Middlesbrough.</div>
+  <div class="line pro">She looks after people at that clinic all day. She shows up for everyone, every single day, even when she's tired.</div>
+  <div class="line pro">Today had one job. Be gentle with her. And Today failed. <span id="nCount"></span></div>
+  <div class="line pro">The prosecution rests. (The prosecution would also like a squash.)</div>
+  <div class="who" style="text-align:right">RAINY McCLOUD ☁️</div><div class="line def">...My client would like to change its plea to "sorry".</div>
+  <button class="btn" data-go="5">The verdict 🔨</button>
+</div></section>
+
+<!-- 5. verdict -->
+<section class="scene" id="s5"><span class="tab">THE VERDICT</span><div class="card">
+  <span class="gavel" id="g5">🔨</span>
+  <div class="who">JUDGE DOODI</div><div class="line">On every count, the court finds the defendant, Today...</div>
+  <div class="big"><div class="stamp" id="vS">GUILTY</div></div>
+  <div class="line" id="vL" style="display:none">...guilty on all counts. Unanimously. By me. Three times.</div>
+  <button class="btn" data-go="6" id="vB" style="visibility:hidden">The sentence 📜</button>
+</div></section>
+
+<!-- 6. sentence + shredder -->
+<section class="scene" id="s6"><span class="tab">THE SENTENCE</span><div class="card">
+  <div class="who">JUDGE DOODI</div>
+  <div class="line">Today is hereby sentenced to:</div>
+  <div class="line">1. End at midnight. No appeals. No extensions.</div>
+  <div class="line">2. Be struck from the record, forever.</div>
+  <div class="line">3. Pay the plaintiff full compensation.</div>
+  <div class="shred" id="shred"><div class="sheet" id="sheet"></div><div class="machine">COURT SHREDDER</div></div>
+  <button class="btn" id="shredB">Feed Today to the shredder 🗑️</button>
+  <button class="btn" data-go="7" id="toComp" style="display:none">Collect compensation 💸</button>
+</div></section>
+
+<!-- 7. compensation -->
+<section class="scene" id="s7"><span class="tab">COMPENSATION</span><div class="card">
+  <h2>Compensation, payable by Today<br>(collected by me, delivered by me)</h2>
+  <p class="small">Tap each one. Screenshot and send to Investigator Batmed to redeem.</p>
+  <div class="coupons" id="cps"></div>
+  <button class="btn" data-go="8" id="toEnd" disabled>Close the case</button>
+</div></section>
+
+<!-- 8. jokes aside -->
+<section class="scene" id="s8"><span class="tab">CASE CLOSED</span><div class="card">
+  <div class="letter">Okay, jokes aside…<br><br>I'm really sorry today was so hard. You didn't deserve a single minute of it.<br><br>You were never the bad part of today. You're the best part of every day I've got.<br><br>Tomorrow is a brand new case file. And tonight, you don't have to be strong. Just let me look after you a little.<br><br>Come to me whenever, my queen 👑</div>
+  <div class="sig">Doodi 💛</div>
+  <button class="btn alt" id="again">Read the case again</button>
+</div></section>
+
+<div class="dots" id="dots"></div>
+</div>
+<div id="conf"></div>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i)};
+var PRESET=[
+ ["Woke up already tired","Objection! The alarm was only doing its job.","Overruled. The alarm can do its job somewhere else, far away from my queen."],
+ ["Work was way too much","Objection! Today was just being... productive.","Productive is a cup of tea and a nice chat. This was an ambush."],
+ ["Someone was rude to her","Objection! Maybe they were having a bad day too.","Then they can file their own case. This court protects Danoya."],
+ ["Everything went wrong, one thing after another","Objection! That's called a sequence. Very efficient.","That's called a pile on, and it's illegal in this courtroom."],
+ ["No proper food or rest","Objection! She had... a biscuit? Probably?","A biscuit is not lunch. The court is horrified."],
+ ["Felt like nobody got it","Objection! Today was very busy.","Too busy to be kind? Guilty. Also, for the record: I get it. Always."],
+ ["Everything just felt heavy","Objection! It's only Wednesday.","Wednesday is no excuse. Heavy days get shorter sentences in my arms."]];
+var OWN=[["Objection! My client says that's not that bad.","Today doesn't get to decide what's bad. She does. Overruled."],["Objection! My client was just... having a moment.","A moment? It had a whole day. Overruled."],["Objection! My client didn't mean it.","Meaning it or not, she felt it. That's enough for this court."]];
+var COUPONS=[["TONIGHT","One long call. As long as you want. I'm not hanging up first."],["THIS WEEK","Manjaros, my treat. Order whatever you want, extra everything."],["TOMORROW","A compliment every hour, on the hour. Starting the second you wake up."],["NO EXPIRY","Unlimited squashes. No limit, no questions, no letting go early."],["NEXT ARGUMENT","You win it. Automatically. Before it even starts."]];
+var sel=[],own=[],counts=[],ci=0,cur=0;
+
+/* sound */
+var AC=null;function unlock(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==="suspended")AC.resume()}
+function tone(f,d,dl,type,v){if(!AC)return;try{var t=AC.currentTime+(dl||0),o=AC.createOscillator(),g=AC.createGain();o.type=type||"triangle";o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v||.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.03)}catch(e){}}
+function gavel(){tone(120,.18,0,"square",.18);tone(90,.25,.02,"sine",.25);tone(130,.15,.32,"square",.14);tone(95,.2,.34,"sine",.2)}
+function stampS(){tone(70,.2,0,"sine",.3);tone(200,.05,0,"square",.08)}
+function ding(){[523,659,784,1047].forEach(function(f,i){tone(f,.2,i*.09,"triangle",.1)})}
+function swoosh(){tone(600,.15,0,"sawtooth",.03);tone(300,.2,.08,"sawtooth",.03)}
+
+/* navigation */
+var N=9;for(var i=0;i<N;i++){var d=document.createElement("i");$("dots").appendChild(d)}
+function go(n){unlock();cur=n;[].forEach.call(document.querySelectorAll(".scene"),function(s){s.classList.toggle("on",s.id==="s"+n)});
+ [].forEach.call($("dots").children,function(d,i){d.className=i<=n?"on":""});
+ if(n===1)setTimeout(function(){bang("g1")},350);
+ if(n===3){ci=0;showCount()}
+ if(n===4)$("nCount").textContent=counts.length===1?"Completely.":counts.length+" times over.";
+ if(n===5)verdict();
+ if(n===6)fillSheet();
+ if(n===7)coupons()}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-go]");if(b){swoosh();go(+b.dataset.go)}});
+function bang(id){var g=$(id);g.classList.remove("bang");void g.offsetWidth;g.classList.add("bang");gavel()}
+
+/* charges */
+PRESET.forEach(function(p,i){var b=document.createElement("button");b.className="ch";b.innerHTML="<i></i>"+p[0];b.onclick=function(){unlock();var k=sel.indexOf(i);if(k<0)sel.push(i);else sel.splice(k,1);b.classList.toggle("sel");b.firstChild.textContent=k<0?"✓":"";tone(k<0?660:440,.08);upd()};$("chs").appendChild(b)});
+function addOwn(){var v=$("own").value.trim();if(!v)return;own.push(v);var b=document.createElement("button");b.className="ch sel";b.innerHTML="<i>✓</i>";b.appendChild(document.createTextNode(v));var idx=own.length-1;b.onclick=function(){var on=b.classList.toggle("sel");b.firstChild.textContent=on?"✓":"";if(on)own[idx]=v;else own[idx]=null;upd()};$("chs").appendChild(b);$("own").value="";tone(660,.08);upd()}
+$("addB").onclick=addOwn;$("own").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();addOwn();$("own").blur()}});
+function total(){return sel.length+own.filter(Boolean).length}
+function upd(){var n=total();$("startTrial").disabled=!n;$("startTrial").textContent=n?"Begin the trial ("+n+(n===1?" charge)":" charges)"):"Pick at least one charge"}
+$("startTrial").onclick=function(){counts=[];PRESET.forEach(function(p,i){if(sel.indexOf(i)>=0)counts.push(p)});var k=0;own.forEach(function(v){if(v){var o=OWN[k++%OWN.length];counts.push([v,o[0],o[1]])}});swoosh();go(3)};
+
+/* the trial */
+function showCount(){var c=counts[ci];$("cntTab").textContent="COUNT "+(ci+1)+" OF "+counts.length;$("cntN").textContent="COUNT "+(ci+1);$("cntT").textContent=c[0];$("obj").textContent=c[1];$("reb").style.display="none";$("cntS").className="stamp";$("overrule").textContent="OVERRULED! 🔨";$("overrule").dataset.st="0"}
+$("overrule").onclick=function(){var b=this;if(b.dataset.st==="0"){b.dataset.st="1";gavel();$("rebT").textContent=counts[ci][2];$("reb").style.display="block";setTimeout(function(){$("cntS").classList.add("on");stampS()},250);b.textContent=ci<counts.length-1?"Next count →":"Closing statement →"}
+ else{swoosh();if(ci<counts.length-1){ci++;showCount();var c=document.querySelector("#s3 .card");c.scrollTop=0}else go(4)}};
+
+/* verdict */
+function verdict(){$("vS").className="stamp";$("vL").style.display="none";$("vB").style.visibility="hidden";
+ setTimeout(function(){bang("g5")},500);setTimeout(function(){$("vS").classList.add("on");stampS();confetti(70)},1300);
+ setTimeout(function(){$("vL").style.display="block";$("vB").style.visibility="visible";ding()},2000)}
+function confetti(n){var c=["#c8202f","#ffcf8a","#ffd34d","#ff8fb1","#fff","#7fe0c8"];for(var i=0;i<n;i++){var e=document.createElement("i");e.className="conf";e.style.left=Math.random()*100+"vw";e.style.background=c[i%c.length];e.style.animationDelay=Math.random()*.8+"s";e.style.animationDuration=2+Math.random()*1.6+"s";$("conf").appendChild(e);setTimeout(function(x){return function(){x.remove()}}(e),4500)}}
+
+/* shredder */
+function fillSheet(){var s=$("sheet");s.className="sheet";s.style.visibility="visible";s.innerHTML="<b>TODAY</b><br>"+counts.map(function(c,i){return(i+1)+". "+esc(c[0])}).join("<br>");[].forEach.call(document.querySelectorAll(".strip"),function(x){x.remove()});$("shredB").style.display="block";$("toComp").style.display="none"}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+$("shredB").onclick=function(){unlock();this.style.display="none";$("sheet").classList.add("go");var k=0,iv=setInterval(function(){tone(80+Math.random()*60,.07,0,"sawtooth",.05);if(k<14){var st=document.createElement("i");st.className="strip";st.style.left="calc(50% - 98px + "+(k*14)+"px)";st.style.animationDelay=(Math.random()*.4)+"s";$("shred").appendChild(st)}if(++k>22){clearInterval(iv);$("sheet").style.visibility="hidden";ding();$("toComp").style.display="block"}},100)};
+
+/* coupons */
+function coupons(){var box=$("cps");box.innerHTML="";var opened=0;COUPONS.forEach(function(c){var d=document.createElement("div");d.className="cp";d.innerHTML="<b>"+c[0]+"</b><div class='t'>"+c[1]+"</div><div class='cv'>🎟️ Tap to collect</div>";d.onclick=function(){if(d.classList.contains("open"))return;d.classList.add("open");ding();opened++;if(opened===COUPONS.length){$("toEnd").disabled=false;confetti(40)}};box.appendChild(d)})}
+
+$("again").onclick=function(){sel=[];own=[];[].forEach.call(document.querySelectorAll(".ch"),function(b,i){if(i<PRESET.length){b.classList.remove("sel");b.firstChild.textContent=""}else b.remove()});upd();go(0)};
+document.addEventListener("touchmove",function(e){if(!e.target.closest(".card"))e.preventDefault()},{passive:false});
+upd();
+})();
+</script>
+</body>
+</html>
